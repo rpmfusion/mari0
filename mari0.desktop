@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Mari0
+Comment=A recreation of the original Super Mario Bros with a portal gun
+Exec=mari0
+Type=Application
+Categories=Game;ArcadeGame;
+Terminal=false
+Icon=mari0
