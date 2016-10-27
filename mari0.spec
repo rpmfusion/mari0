@@ -1,23 +1,20 @@
+%global githash 5392efaf472ece528f70a87b006a7bf87ae018c5
+
 Name:           mari0
 Version:        1.6
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        A recreation of the original Super Mario Bros with a portal gun
 
 License:        CC-BY-NC-SA
 URL:            http://stabyourself.net/mari0/
-#Source0 is the upstream source:
-#Updated by hacktivista, see github for details:
-#https://github.com/Hacktivista/mari0
-#Download here:
-#https://github.com/Hacktivista/mari0/archive/fc23e18525c4d0c881e64268e56fd23773f006af.zip
-Source0:        %{name}-fc23e18525c4d0c881e64268e56fd23773f006af.zip
+Source0:        https://github.com/Stabyourself/%{name}/archive/%{githash}.tar.gz
 #Source1 is just a Desktop file:
 Source1:        %{name}.desktop
 
 #BuildRequires:  ImageMagick
 BuildRequires:  desktop-file-utils
 BuildArch:      noarch
-Requires:       love >= 0.9.0
+Requires:       love >= 0.10.1
 
 #Reworded from the website (see URL above)
 %description
@@ -28,21 +25,21 @@ popular Value game, Portal. Mari0 also has a 4-player coop mode, with
 everyone having their own Portal gun. This game is made with LOVE.
 
 %prep
-%setup -q -c -n %{name}-fc23e18525c4d0c881e64268e56fd23773f006af
+%autosetup -n %{name}-%{githash}
+
+%build
+zip -r %{name}.zip `ls | grep -v "_DO NOT INCLUDE"`
 #Execution Script:
 echo -e "#!/bin/sh\nlove %{_datadir}/%{name}/%{name}.love\n" > %{name}
 
-%build
-#No Build Required
- 
 %install
-install -p -D -m 0644 %{name}-fc23e18525c4d0c881e64268e56fd23773f006af/%{name}.love %{buildroot}/%{_datadir}/%{name}/%{name}.love
-install -p -D -m 0755  %{name} %{buildroot}/%{_bindir}/%{name}
+install -p -D -m 0644 %{name}.zip %{buildroot}/%{_datadir}/%{name}/%{name}.love
+install -p -D -m 0755 %{name} %{buildroot}/%{_bindir}/%{name}
 #Install desktop, icons:
 desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications \
   %{SOURCE1}
-install -p -D -m 0644  "%{name}-fc23e18525c4d0c881e64268e56fd23773f006af/_DO NOT INCLUDE/icon.png" %{buildroot}/%{_datadir}/pixmaps/%{name}.png
+install -p -D -m 0644  "_DO NOT INCLUDE/icon.png" %{buildroot}/%{_datadir}/pixmaps/%{name}.png
 
 %files
 %{_bindir}/%{name}
@@ -51,6 +48,9 @@ install -p -D -m 0644  "%{name}-fc23e18525c4d0c881e64268e56fd23773f006af/_DO NOT
 %{_datadir}/applications/%{name}.desktop
 
 %changelog
+* Wed Oct 26 2016 Jeremy Newton <alexjnewt at hotmail dot com> - 1.6-6
+- Update to git version (fixes issue with love 0.10.*)
+
 * Sun Nov 29 2015 Jeremy Newton <alexjnewt at hotmail dot com> - 1.6-5
 - Update to work with love 0.9+
 
