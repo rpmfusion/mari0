@@ -28,12 +28,12 @@ everyone having their own Portal gun. This game is made with LOVE.
 %autosetup -n %{name}-%{githash}
 
 %build
-zip -r %{name}.zip `ls | grep -v "_DO NOT INCLUDE"`
+zip -r %{name}.love . -x "_DO NOT INCLUDE"
 #Execution Script:
 echo -e "#!/bin/sh\nlove %{_datadir}/%{name}/%{name}.love\n" > %{name}
 
 %install
-install -p -D -m 0644 %{name}.zip %{buildroot}/%{_datadir}/%{name}/%{name}.love
+install -p -D -m 0644 %{name}.love %{buildroot}/%{_datadir}/%{name}/%{name}.love
 install -p -D -m 0755 %{name} %{buildroot}/%{_bindir}/%{name}
 #Install desktop, icons:
 desktop-file-install \
