@@ -1,0 +1,535 @@
+From 9c2d30a4d7e838135c8cb687dbb59d002626450f Mon Sep 17 00:00:00 2001
+From: Michael Vetter <jubalh@openmailbox.org>
+Date: Sat, 24 Jun 2017 10:53:15 +0200
+Subject: [PATCH] Replace math.mod() with math.fmod()
+
+---
+ bowser.lua     |  4 ++--
+ box.lua        |  4 ++--
+ castlefire.lua |  4 ++--
+ editor.lua     | 10 +++++-----
+ game.lua       | 36 ++++++++++++++++++------------------
+ goomba.lua     |  4 ++--
+ hammerbro.lua  |  4 ++--
+ koopa.lua      |  4 ++--
+ mario.lua      | 26 +++++++++++++-------------
+ menu.lua       |  8 ++++----
+ mushroom.lua   |  4 ++--
+ oneup.lua      |  4 ++--
+ sha1.lua       |  6 +++---
+ star.lua       |  4 ++--
+ 14 files changed, 61 insertions(+), 61 deletions(-)
+
+diff --git a/bowser.lua b/bowser.lua
+index f9f18d5..1cdaa59 100644
+--- a/bowser.lua
++++ b/bowser.lua
+@@ -76,7 +76,7 @@ function bowser:update(dt)
+ 		end
+ 
+ 		--rotate back to 0 (portals)
+-		self.rotation = math.mod(self.rotation, math.pi*2)
++		self.rotation = math.fmod(self.rotation, math.pi*2)
+ 		if self.rotation > 0 then
+ 			self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 			if self.rotation < 0 then
+@@ -238,4 +238,4 @@ end
+ function bowser:emancipate(a)
+ 
+ 	self:shotted()
+-end
+\ No newline at end of file
++end
+diff --git a/box.lua b/box.lua
+index 608703d..ee01111 100644
+--- a/box.lua
++++ b/box.lua
+@@ -68,7 +68,7 @@ function box:update(dt)
+ 	end
+ 	
+ 	--rotate back to 0 (portals)
+-	self.rotation = math.mod(self.rotation, math.pi*2)
++	self.rotation = math.fmod(self.rotation, math.pi*2)
+ 	if self.rotation > 0 then
+ 		self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 		if self.rotation < 0 then
+@@ -211,4 +211,4 @@ end
+ 
+ function box:portaled()
+ 	self.portaledframe = true
+-end
+\ No newline at end of file
++end
+diff --git a/castlefire.lua b/castlefire.lua
+index 16d3fe0..41fc201 100644
+--- a/castlefire.lua
++++ b/castlefire.lua
+@@ -27,7 +27,7 @@ function castlefire:update(dt)
+ 		self.timer = self.timer - castlefiredelay
+ 		if self.dir == "cw" then
+ 			self.angle = self.angle + castlefireangleadd
+-			self.angle = math.mod(self.angle, 360)
++			self.angle = math.fmod(self.angle, 360)
+ 		else
+ 			self.angle = self.angle - castlefireangleadd
+ 			while self.angle < 0 do
+@@ -100,4 +100,4 @@ function castlefirefire:init()
+ 	self.offsetY = 4
+ 	self.quadcenterX = 4
+ 	self.quadcenterY = 4
+-end
+\ No newline at end of file
++end
+diff --git a/editor.lua b/editor.lua
+index 833c2c5..34366ef 100644
+--- a/editor.lua
++++ b/editor.lua
+@@ -314,11 +314,11 @@ function editor_draw()
+ 			
+ 			if editentities == false then
+ 				for i = 1, tilelistcount+1 do
+-					love.graphics.draw(tilequads[i+tileliststart-1].image, tilequads[i+tileliststart-1].quad, math.mod((i-1), 22)*17*scale+5*scale, math.floor((i-1)/22)*17*scale+38*scale-tilesoffset, 0, scale, scale)
++					love.graphics.draw(tilequads[i+tileliststart-1].image, tilequads[i+tileliststart-1].quad, math.fmod((i-1), 22)*17*scale+5*scale, math.floor((i-1)/22)*17*scale+38*scale-tilesoffset, 0, scale, scale)
+ 				end
+ 			else
+ 				for i = 1, entitiescount do
+-					love.graphics.draw(entityquads[i].image, entityquads[i].quad, math.mod((i-1), 22)*17*scale+5*scale, math.floor((i-1)/22)*17*scale+38*scale-tilesoffset, 0, scale, scale)
++					love.graphics.draw(entityquads[i].image, entityquads[i].quad, math.fmod((i-1), 22)*17*scale+5*scale, math.floor((i-1)/22)*17*scale+38*scale-tilesoffset, 0, scale, scale)
+ 				end
+ 			end
+ 			
+@@ -326,12 +326,12 @@ function editor_draw()
+ 			if editentities == false then
+ 				if tile and tile <= tilelistcount+1 then
+ 					love.graphics.setColor(255, 255, 255, 127)
+-					love.graphics.rectangle("fill", (5+math.mod((tile-1), 22)*17)*scale, (38+math.floor((tile-1)/22)*17)*scale-tilesoffset, 16*scale, 16*scale)
++					love.graphics.rectangle("fill", (5+math.fmod((tile-1), 22)*17)*scale, (38+math.floor((tile-1)/22)*17)*scale-tilesoffset, 16*scale, 16*scale)
+ 				end
+ 			else
+ 				if tile and tile <= entitiescount then
+ 					love.graphics.setColor(255, 255, 255, 127)
+-					love.graphics.rectangle("fill", (5+math.mod((tile-1), 22)*17)*scale, (38+math.floor((tile-1)/22)*17)*scale-tilesoffset, 16*scale, 16*scale)
++					love.graphics.rectangle("fill", (5+math.fmod((tile-1), 22)*17)*scale, (38+math.floor((tile-1)/22)*17)*scale-tilesoffset, 16*scale, 16*scale)
+ 				end
+ 			end
+ 			
+@@ -1223,4 +1223,4 @@ function formatscrollnumber(i)
+ 	else
+ 		return i
+ 	end
+-end
+\ No newline at end of file
++end
+diff --git a/game.lua b/game.lua
+index a52b1c6..8eb78af 100644
+--- a/game.lua
++++ b/game.lua
+@@ -858,15 +858,15 @@ function game_draw()
+ 		if earthquake > 0 then
+ 			local colortable = {{242, 111, 51}, {251, 244, 174}, {95, 186, 76}, {29, 151, 212}, {101, 45, 135}, {238, 64, 68}}
+ 			for i = 1, backgroundstripes do
+-				local r, g, b = unpack(colortable[math.mod(i-1, 6)+1])
++				local r, g, b = unpack(colortable[math.fmod(i-1, 6)+1])
+ 				local a = earthquake/rainboomearthquake*255
+ 				
+ 				love.graphics.setColor(r, g, b, a)
+ 				
+-				local alpha = math.rad((i/backgroundstripes + math.mod(sunrot/5, 1)) * 360)
++				local alpha = math.rad((i/backgroundstripes + math.fmod(sunrot/5, 1)) * 360)
+ 				local point1 = {width*8*scale+300*scale*math.cos(alpha), 112*scale+300*scale*math.sin(alpha)}
+ 				
+-				local alpha = math.rad(((i+1)/backgroundstripes + math.mod(sunrot/5, 1)) * 360)
++				local alpha = math.rad(((i+1)/backgroundstripes + math.fmod(sunrot/5, 1)) * 360)
+ 				local point2 = {width*8*scale+300*scale*math.cos(alpha), 112*scale+300*scale*math.sin(alpha)}
+ 				
+ 				love.graphics.polygon("fill", width*8*scale, 112*scale, point1[1], point1[2], point2[1], point2[2])
+@@ -908,7 +908,7 @@ function game_draw()
+ 				end
+ 				for y = 1, math.ceil(15/custombackgroundheight[i]) do
+ 					for x = 1, math.ceil(width/custombackgroundwidth[i])+1 do
+-						love.graphics.draw(custombackgroundimg[i], math.floor(((x-1)*custombackgroundwidth[i])*16*scale) - math.floor(math.mod(xscroll, custombackgroundwidth[i])*16*scale), (y-1)*custombackgroundheight[i]*16*scale, 0, scale, scale)
++						love.graphics.draw(custombackgroundimg[i], math.floor(((x-1)*custombackgroundwidth[i])*16*scale) - math.floor(math.fmod(xscroll, custombackgroundwidth[i])*16*scale), (y-1)*custombackgroundheight[i]*16*scale, 0, scale, scale)
+ 					end
+ 				end
+ 			end
+@@ -940,10 +940,10 @@ function game_draw()
+ 		end
+ 		
+ 		--TILES
+-		love.graphics.draw(smbspritebatch[split], math.floor(-math.mod(xscroll, 1)*16*scale), 0)
+-		love.graphics.draw(portalspritebatch[split], math.floor(-math.mod(xscroll, 1)*16*scale), 0)
++		love.graphics.draw(smbspritebatch[split], math.floor(-math.fmod(xscroll, 1)*16*scale), 0)
++		love.graphics.draw(portalspritebatch[split], math.floor(-math.fmod(xscroll, 1)*16*scale), 0)
+ 		if customtiles then
+-			love.graphics.draw(customspritebatch[split], math.floor(-math.mod(xscroll, 1)*16*scale), 0)
++			love.graphics.draw(customspritebatch[split], math.floor(-math.fmod(xscroll, 1)*16*scale), 0)
+ 		end
+ 		
+ 		local lmap = map
+@@ -965,12 +965,12 @@ function game_draw()
+ 				
+ 				local tilenumber = t[1]
+ 				if tilequads[tilenumber].coinblock and tilequads[tilenumber].invisible == false then --coinblock
+-					love.graphics.draw(coinblockimage, coinblockquads[spriteset][coinframe], math.floor((x-1-math.mod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16-8)*scale, 0, scale, scale)
++					love.graphics.draw(coinblockimage, coinblockquads[spriteset][coinframe], math.floor((x-1-math.fmod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16-8)*scale, 0, scale, scale)
+ 				elseif tilequads[tilenumber].coin then --coin
+-					love.graphics.draw(coinimage, coinquads[spriteset][coinframe], math.floor((x-1-math.mod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16-8)*scale, 0, scale, scale)
++					love.graphics.draw(coinimage, coinquads[spriteset][coinframe], math.floor((x-1-math.fmod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16-8)*scale, 0, scale, scale)
+ 				elseif bounceyoffset ~= 0 then
+ 					if tilequads[tilenumber].invisible == false or editormode then
+-						love.graphics.draw(tilequads[tilenumber].image, tilequads[tilenumber].quad, math.floor((x-1-math.mod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16-8)*scale, 0, scale, scale)
++						love.graphics.draw(tilequads[tilenumber].image, tilequads[tilenumber].quad, math.floor((x-1-math.fmod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16-8)*scale, 0, scale, scale)
+ 					end
+ 				end
+ 				
+@@ -991,24 +991,24 @@ function game_draw()
+ 						end
+ 						
+ 						if t["gels"][dir] == 1 then
+-							love.graphics.draw(gel1ground, math.floor((x-.5-math.mod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16)*scale, r, scale, scale, 8, 8)
++							love.graphics.draw(gel1ground, math.floor((x-.5-math.fmod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16)*scale, r, scale, scale, 8, 8)
+ 						elseif t["gels"][dir] == 2 then
+-							love.graphics.draw(gel2ground, math.floor((x-.5-math.mod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16)*scale, r, scale, scale, 8, 8)
++							love.graphics.draw(gel2ground, math.floor((x-.5-math.fmod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16)*scale, r, scale, scale, 8, 8)
+ 						elseif t["gels"][dir] == 3 then
+-							love.graphics.draw(gel3ground, math.floor((x-.5-math.mod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16)*scale, r, scale, scale, 8, 8)
++							love.graphics.draw(gel3ground, math.floor((x-.5-math.fmod(xscroll, 1))*16*scale), ((y-1-bounceyoffset)*16)*scale, r, scale, scale, 8, 8)
+ 						end
+ 					end
+ 				end
+ 				
+ 				if editormode then
+ 					if tilequads[t[1]].invisible and t[1] ~= 1 then
+-						love.graphics.draw(tilequads[t[1]].image, tilequads[t[1]].quad, math.floor((x-1-math.mod(xscroll, 1))*16*scale), ((y-1)*16-8)*scale, 0, scale, scale)
++						love.graphics.draw(tilequads[t[1]].image, tilequads[t[1]].quad, math.floor((x-1-math.fmod(xscroll, 1))*16*scale), ((y-1)*16-8)*scale, 0, scale, scale)
+ 					end
+ 					
+ 					if #t > 1 and t[2] ~= "link" then
+ 						tilenumber = t[2]
+ 						love.graphics.setColor(255, 255, 255, 150)
+-						love.graphics.draw(entityquads[tilenumber].image, entityquads[tilenumber].quad, math.floor((x-1-math.mod(xscroll, 1))*16*scale), ((y-1)*16-8)*scale, 0, scale, scale)
++						love.graphics.draw(entityquads[tilenumber].image, entityquads[tilenumber].quad, math.floor((x-1-math.fmod(xscroll, 1))*16*scale), ((y-1)*16-8)*scale, 0, scale, scale)
+ 						love.graphics.setColor(255, 255, 255, 255)
+ 					end
+ 				end
+@@ -2246,7 +2246,7 @@ function loadmap(filename)
+ 	--MAP ITSELF
+ 	local t = s2[1]:split(",")
+ 	
+-	if math.mod(#t, 15) ~= 0 then
++	if math.fmod(#t, 15) ~= 0 then
+ 		print("Incorrect number of entries: " .. #t)
+ 		return false
+ 	end
+@@ -3665,13 +3665,13 @@ function traceline(sourcex, sourcey, radians)
+ 	
+ 		--get tendency
+ 		if side == "down" or side == "up" then
+-			if math.mod(x, 1) > 0.5 then
++			if math.fmod(x, 1) > 0.5 then
+ 				tendency = 1
+ 			else
+ 				tendency = -1
+ 			end
+ 		elseif side == "left" or side == "right" then
+-			if math.mod(y, 1) > 0.5 then
++			if math.fmod(y, 1) > 0.5 then
+ 				tendency = 1
+ 			else
+ 				tendency = -1
+diff --git a/goomba.lua b/goomba.lua
+index 6ed3523..943d927 100644
+--- a/goomba.lua
++++ b/goomba.lua
+@@ -74,7 +74,7 @@ function goomba:update(dt)
+ 	if self.t == "spikeyfall" then
+ 		self.rotation = 0
+ 	else
+-		self.rotation = math.mod(self.rotation, math.pi*2)
++		self.rotation = math.fmod(self.rotation, math.pi*2)
+ 		if self.rotation > 0 then
+ 			self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 			if self.rotation < 0 then
+@@ -283,4 +283,4 @@ end
+ 
+ function goomba:laser()
+ 	self:shotted()
+-end
+\ No newline at end of file
++end
+diff --git a/hammerbro.lua b/hammerbro.lua
+index 72900f5..3d1c9a1 100644
+--- a/hammerbro.lua
++++ b/hammerbro.lua
+@@ -45,7 +45,7 @@ end
+ 
+ function hammerbro:update(dt)
+ 	--rotate back to 0 (portals)
+-	self.rotation = math.mod(self.rotation, math.pi*2)
++	self.rotation = math.fmod(self.rotation, math.pi*2)
+ 	if self.rotation > 0 then
+ 		self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 		if self.rotation < 0 then
+@@ -343,4 +343,4 @@ end
+ 
+ function hammer:portaled()
+ 	self.killstuff = true
+-end
+\ No newline at end of file
++end
+diff --git a/koopa.lua b/koopa.lua
+index b482246..4de1d6d 100644
+--- a/koopa.lua
++++ b/koopa.lua
+@@ -75,7 +75,7 @@ end
+ 
+ function koopa:update(dt)
+ 	--rotate back to 0 (portals)
+-	self.rotation = math.mod(self.rotation, math.pi*2)
++	self.rotation = math.fmod(self.rotation, math.pi*2)
+ 	if self.rotation > 0 then
+ 		self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 		if self.rotation < 0 then
+@@ -386,4 +386,4 @@ end
+ 
+ function koopa:startfall()
+ 	self.falling = true
+-end
+\ No newline at end of file
++end
+diff --git a/mario.lua b/mario.lua
+index 5acecb8..fa1150c 100644
+--- a/mario.lua
++++ b/mario.lua
+@@ -229,7 +229,7 @@ end
+ function mario:update(dt)
+ 	self.passivemoved = false
+ 	--rotate back to 0 (portals)
+-	self.rotation = math.mod(self.rotation, math.pi*2)
++	self.rotation = math.fmod(self.rotation, math.pi*2)
+ 	
+ 	if self.rotation < -math.pi then
+ 		self.rotation = self.rotation + math.pi*2
+@@ -367,7 +367,7 @@ function mario:update(dt)
+ 				self.y = 68/16 + flagydistance-self.height
+ 				self.climbframe = 2
+ 			else
+-				if math.mod(self.animationtimer, flagclimbframedelay*2) >= flagclimbframedelay then
++				if math.fmod(self.animationtimer, flagclimbframedelay*2) >= flagclimbframedelay then
+ 					self.climbframe = 1
+ 				else
+ 					self.climbframe = 2
+@@ -483,7 +483,7 @@ function mario:update(dt)
+ 		if bridgedisappear then
+ 			local v = objects["bowser"][1]
+ 			if v then
+-				v.walkframe = round(math.mod(self.animationtimer, castleanimationbowserframedelay*2)*(1/(castleanimationbowserframedelay*2)))+1
++				v.walkframe = round(math.fmod(self.animationtimer, castleanimationbowserframedelay*2)*(1/(castleanimationbowserframedelay*2)))+1
+ 			end
+ 			self.animationtimer2 = self.animationtimer2 + dt
+ 			while self.animationtimer2 > castleanimationbridgedisappeardelay do
+@@ -630,7 +630,7 @@ function mario:update(dt)
+ 		
+ 		self.vinemovetimer = self.vinemovetimer + dt
+ 		
+-		self.climbframe = math.ceil(math.mod(self.vinemovetimer, vineframedelay*2)/vineframedelay)
++		self.climbframe = math.ceil(math.fmod(self.vinemovetimer, vineframedelay*2)/vineframedelay)
+ 		self.climbframe = math.max(self.climbframe, 1)
+ 		self:setquad()
+ 		
+@@ -647,7 +647,7 @@ function mario:update(dt)
+ 		if self.vineanimationclimb then
+ 			self.vinemovetimer = self.vinemovetimer + dt
+ 			
+-			self.climbframe = math.ceil(math.mod(self.vinemovetimer, vineframedelay*2)/vineframedelay)
++			self.climbframe = math.ceil(math.fmod(self.vinemovetimer, vineframedelay*2)/vineframedelay)
+ 			self.climbframe = math.max(self.climbframe, 1)
+ 			
+ 			self.y = self.y - vinemovespeed*dt
+@@ -675,7 +675,7 @@ function mario:update(dt)
+ 	elseif self.animation == "shrink" then
+ 		self.animationtimer = self.animationtimer + dt
+ 		--set frame lol
+-		local frame = math.ceil(math.mod(self.animationtimer, growframedelay*3)/shrinkframedelay)
++		local frame = math.ceil(math.fmod(self.animationtimer, growframedelay*3)/shrinkframedelay)
+ 		self:updateangle()
+ 	
+ 		if frame == 1 then
+@@ -700,7 +700,7 @@ function mario:update(dt)
+ 			end
+ 		end
+ 		
+-		local invis = math.ceil(math.mod(self.animationtimer, invicibleblinktime*2)/invicibleblinktime)
++		local invis = math.ceil(math.fmod(self.animationtimer, invicibleblinktime*2)/invicibleblinktime)
+ 		
+ 		if invis == 1 then
+ 			self.drawable = true
+@@ -724,7 +724,7 @@ function mario:update(dt)
+ 	elseif self.animation == "invincible" then
+ 		self.animationtimer = self.animationtimer + dt
+ 		
+-		local invis = math.ceil(math.mod(self.animationtimer, invicibleblinktime*2)/invicibleblinktime)
++		local invis = math.ceil(math.fmod(self.animationtimer, invicibleblinktime*2)/invicibleblinktime)
+ 		
+ 		if invis == 1 then
+ 			self.drawable = true
+@@ -741,7 +741,7 @@ function mario:update(dt)
+ 	elseif self.animation == "grow1" then
+ 		self.animationtimer = self.animationtimer + dt
+ 		--set frame lol
+-		local frame = math.ceil(math.mod(self.animationtimer, growframedelay*3)/growframedelay)
++		local frame = math.ceil(math.fmod(self.animationtimer, growframedelay*3)/growframedelay)
+ 		self:updateangle()
+ 		
+ 		if frame == 3 then
+@@ -781,7 +781,7 @@ function mario:update(dt)
+ 	elseif self.animation == "grow2" then
+ 		self.animationtimer = self.animationtimer + dt
+ 		--set frame lol
+-		local frame = math.ceil(math.mod(self.animationtimer, growframedelay*3)/growframedelay)
++		local frame = math.ceil(math.fmod(self.animationtimer, growframedelay*3)/growframedelay)
+ 		self:updateangle()
+ 		
+ 		self.colors = starcolors[frame]
+@@ -812,7 +812,7 @@ function mario:update(dt)
+ 		if upkey(self.playernumber) then
+ 			self.vinemovetimer = self.vinemovetimer + dt
+ 			
+-			self.climbframe = math.ceil(math.mod(self.vinemovetimer, vineframedelay*2)/vineframedelay)
++			self.climbframe = math.ceil(math.fmod(self.vinemovetimer, vineframedelay*2)/vineframedelay)
+ 			self.climbframe = math.max(self.climbframe, 1)
+ 			
+ 			self.y = self.y-vinemovespeed*dt
+@@ -825,7 +825,7 @@ function mario:update(dt)
+ 		elseif downkey(self.playernumber) then
+ 			self.vinemovetimer = self.vinemovetimer + dt
+ 			
+-			self.climbframe = math.ceil(math.mod(self.vinemovetimer, vineframedelaydown*2)/vineframedelaydown)
++			self.climbframe = math.ceil(math.fmod(self.vinemovetimer, vineframedelaydown*2)/vineframedelaydown)
+ 			self.climbframe = math.max(self.climbframe, 1)
+ 			
+ 			checkportalHOR(self, self.y+vinemovedownspeed*dt)
+@@ -1063,7 +1063,7 @@ function mario:movement(dt)
+ 	--not in air
+ 	if self.falling == false and self.jumping == false then
+ 		--bottom on grid
+-		if math.mod(self.y+self.height, 1) == 0 then
++		if math.fmod(self.y+self.height, 1) == 0 then
+ 			local x = round(self.x+self.width/2+.5)
+ 			local y = self.y+self.height+1
+ 			--x and y in map
+diff --git a/menu.lua b/menu.lua
+index b425f59..5806f7a 100644
+--- a/menu.lua
++++ b/menu.lua
+@@ -126,7 +126,7 @@ function menu_update(dt)
+ 	
+ 		if optionsselection > 3 and optionsselection < 13 then
+ 			local colornumber = math.floor((optionsselection-1)/3)
+-			local colorRGB = math.mod(optionsselection-4, 3)+1
++			local colorRGB = math.fmod(optionsselection-4, 3)+1
+ 			
+ 			if love.keyboard.isDown("right") and mariocolors[skinningplayer][colornumber][colorRGB] < 255 then
+ 				mariocolors[skinningplayer][colornumber][colorRGB] = mariocolors[skinningplayer][colornumber][colorRGB] + RGBchangespeed*dt
+@@ -806,7 +806,7 @@ function menu_draw()
+ 			--WHITE BACKGROUND FOR RGB BARS
+ 			
+ 			if optionsselection > 3 and optionsselection < 13 then
+-				love.graphics.rectangle("fill", 69*scale, 89*scale + math.mod(optionsselection-4, 3)*10*scale + math.floor((optionsselection-4)/3)*14*scale, 142*scale, 10*scale)
++				love.graphics.rectangle("fill", 69*scale, 89*scale + math.fmod(optionsselection-4, 3)*10*scale + math.floor((optionsselection-4)/3)*14*scale, 142*scale, 10*scale)
+ 			end
+ 			
+ 			if math.floor((optionsselection-1)/3) == 1 then
+@@ -1166,7 +1166,7 @@ function loadbackground(background)
+ 		--MAP ITSELF
+ 		local t = s2[1]:split(",")
+ 		
+-		if math.mod(#t, 15) ~= 0 then
++		if math.fmod(#t, 15) ~= 0 then
+ 			print("Incorrect number of entries: " .. #t)
+ 			return false
+ 		end
+@@ -2216,4 +2216,4 @@ function selectworld()
+ 			selectworldexists[i] = true
+ 		end
+ 	end
+-end
+\ No newline at end of file
++end
+diff --git a/mushroom.lua b/mushroom.lua
+index 27c1810..0fba999 100644
+--- a/mushroom.lua
++++ b/mushroom.lua
+@@ -38,7 +38,7 @@ end
+ 
+ function mushroom:update(dt)
+ 	--rotate back to 0 (portals)
+-	self.rotation = math.mod(self.rotation, math.pi*2)
++	self.rotation = math.fmod(self.rotation, math.pi*2)
+ 	if self.rotation > 0 then
+ 		self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 		if self.rotation < 0 then
+@@ -130,4 +130,4 @@ function mushroom:jump(x)
+ 	elseif self.x+self.width/2 > x-0.5 then
+ 		self.speedx = mushroomspeed
+ 	end
+-end
+\ No newline at end of file
++end
+diff --git a/oneup.lua b/oneup.lua
+index 38a095e..2d0108d 100644
+--- a/oneup.lua
++++ b/oneup.lua
+@@ -38,7 +38,7 @@ end
+ 
+ function oneup:update(dt)
+ 	--rotate back to 0 (portals)
+-	self.rotation = math.mod(self.rotation, math.pi*2)
++	self.rotation = math.fmod(self.rotation, math.pi*2)
+ 	if self.rotation > 0 then
+ 		self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 		if self.rotation < 0 then
+@@ -136,4 +136,4 @@ function oneup:jump(x)
+ 	elseif self.x+self.width/2 > x-0.5 then
+ 		self.speedx = mushroomspeed
+ 	end
+-end
+\ No newline at end of file
++end
+diff --git a/sha1.lua b/sha1.lua
+index 94b9f01..9625b5d 100644
+--- a/sha1.lua
++++ b/sha1.lua
+@@ -327,9 +327,9 @@ function sha1(msg)
+    end
+ 
+    -- now to append the length as a 64-bit number.
+-   local B1, R1 = math.modf(msg_len_in_bits  / 0x01000000)
+-   local B2, R2 = math.modf( 0x01000000 * R1 / 0x00010000)
+-   local B3, R3 = math.modf( 0x00010000 * R2 / 0x00000100)
++   local B1, R1 = math.fmodf(msg_len_in_bits  / 0x01000000)
++   local B2, R2 = math.fmodf( 0x01000000 * R1 / 0x00010000)
++   local B3, R3 = math.fmodf( 0x00010000 * R2 / 0x00000100)
+    local B4     =            0x00000100 * R3
+ 
+    local L64 = string.char( 0) .. string.char( 0) .. string.char( 0) .. string.char( 0) -- high 32 bits
+diff --git a/star.lua b/star.lua
+index 877be3e..62dcdbd 100644
+--- a/star.lua
++++ b/star.lua
+@@ -41,7 +41,7 @@ end
+ 
+ function star:update(dt)
+ 	--rotate back to 0 (portals)
+-	self.rotation = math.mod(self.rotation, math.pi*2)
++	self.rotation = math.fmod(self.rotation, math.pi*2)
+ 	if self.rotation > 0 then
+ 		self.rotation = self.rotation - portalrotationalignmentspeed*dt
+ 		if self.rotation < 0 then
+@@ -139,4 +139,4 @@ function star:jump(x)
+ 	elseif self.x+self.width/2 > x-0.5 then
+ 		self.speedx = mushroomspeed
+ 	end
+-end
+\ No newline at end of file
++end

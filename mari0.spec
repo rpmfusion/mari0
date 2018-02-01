@@ -1,19 +1,19 @@
-%global githash 5392efaf472ece528f70a87b006a7bf87ae018c5
-
 Name:           mari0
-Version:        1.6
-Release:        8%{?dist}
+Version:        1.6.1
+Release:        1%{?dist}
 Summary:        A recreation of the original Super Mario Bros with a portal gun
 
 License:        CC-BY-NC-SA
 URL:            http://stabyourself.net/mari0/
-Source0:        https://github.com/Stabyourself/%{name}/archive/%{githash}.tar.gz
+Source0:        https://github.com/Stabyourself/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 #Source1 is just a Desktop file:
 Source1:        %{name}.desktop
+Patch0:         https://github.com/Stabyourself/mari0/commit/9c2d30a4d7e838135c8cb687dbb59d002626450f.patch#/runtime_fix.patch
+
+BuildArch:      noarch
 
 #BuildRequires:  ImageMagick
 BuildRequires:  desktop-file-utils
-BuildArch:      noarch
 Requires:       love >= 0.10.1
 
 #Reworded from the website (see URL above)
@@ -25,7 +25,7 @@ popular Value game, Portal. Mari0 also has a 4-player coop mode, with
 everyone having their own Portal gun. This game is made with LOVE.
 
 %prep
-%autosetup -n %{name}-%{githash}
+%autosetup -p1
 
 %build
 zip -r %{name}.love . -x "_DO NOT INCLUDE"
@@ -42,12 +42,18 @@ desktop-file-install \
 install -p -D -m 0644  "_DO NOT INCLUDE/icon.png" %{buildroot}/%{_datadir}/pixmaps/%{name}.png
 
 %files
+%doc README.md
 %{_bindir}/%{name}
 %{_datadir}/%{name}/%{name}.love
 %{_datadir}/pixmaps/%{name}.png
 %{_datadir}/applications/%{name}.desktop
 
 %changelog
+* Thu Feb 01 2018 Leigh Scott <leigh123linux@googlemail.com> - 1.6.1-1
+- Update to 1.6.1 release
+- Fix runtime issue (rfbz#4667)
+- Fix broken release tag, previous build was git but didn't have git prefix
+
 * Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 1.6-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
