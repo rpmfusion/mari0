@@ -1,6 +1,6 @@
 Name:           mari0
 Version:        1.6.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A recreation of the original Super Mario Bros with a portal gun
 
 License:        CC-BY-NC-SA
@@ -49,6 +49,9 @@ install -p -D -m 0644  "_DO NOT INCLUDE/icon.png" %{buildroot}/%{_datadir}/pixma
 %{_datadir}/applications/%{name}.desktop
 
 %changelog
+* Fri Jul 27 2018 RPM Fusion Release Engineering <sergio@serjux.com> - 1.6.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Fri Mar 02 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 1.6.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
