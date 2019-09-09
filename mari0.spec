@@ -1,14 +1,13 @@
 Name:           mari0
-Version:        1.6.1
-Release:        6%{?dist}
+Version:        1.6.2
+Release:        1%{?dist}
 Summary:        A recreation of the original Super Mario Bros with a portal gun
 
 License:        CC-BY-NC-SA
 URL:            http://stabyourself.net/mari0/
-Source0:        https://github.com/Stabyourself/%{name}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:        https://github.com/Stabyourself/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 #Source1 is just a Desktop file:
 Source1:        %{name}.desktop
-Patch0:         https://github.com/Stabyourself/mari0/commit/9c2d30a4d7e838135c8cb687dbb59d002626450f.patch#/runtime_fix.patch
 
 BuildArch:      noarch
 
@@ -28,7 +27,7 @@ everyone having their own Portal gun. This game is made with LOVE.
 %autosetup -p1
 
 %build
-zip -r %{name}.love . -x "_DO NOT INCLUDE"
+zip -r %{name}.love .
 #Execution Script:
 echo -e "#!/bin/sh\nlove %{_datadir}/%{name}/%{name}.love\n" > %{name}
 
@@ -39,7 +38,7 @@ install -p -D -m 0755 %{name} %{buildroot}/%{_bindir}/%{name}
 desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications \
   %{SOURCE1}
-install -p -D -m 0644  "_DO NOT INCLUDE/icon.png" %{buildroot}/%{_datadir}/pixmaps/%{name}.png
+install -p -D -m 0644 graphics/icon.png %{buildroot}/%{_datadir}/pixmaps/%{name}.png
 
 %files
 %doc README.md
@@ -49,6 +48,9 @@ install -p -D -m 0644  "_DO NOT INCLUDE/icon.png" %{buildroot}/%{_datadir}/pixma
 %{_datadir}/applications/%{name}.desktop
 
 %changelog
+* Mon Sep 09 2019 Leigh Scott <leigh123linux@googlemail.com> - 1.6.2-1
+- Update to 1.6.2 release (rfbz#5178)
+
 * Sat Aug 10 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 1.6.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
